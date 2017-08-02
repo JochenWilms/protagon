@@ -1,2 +1,2 @@
 # protagon
-c++ game for school project
+game for schoolproject in Qt
