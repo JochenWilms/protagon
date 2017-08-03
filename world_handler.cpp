@@ -30,23 +30,34 @@ void World_handler::FindStartPosition()
 
 void World_handler::Move_up()
 {
-
-    protagon->setPos(protagon->getXPos(),protagon->getYPos()-1);
+    int place = world->getCols()*(protagon->getYPos()-1)+protagon->getXPos();
+    if(world_tiles.at(place)->getValue()!= INFINITY){
+         protagon->setPos(protagon->getXPos(),protagon->getYPos()-1);
+    }
 }
 
 void World_handler::Move_down()
 {
-    protagon->setPos(protagon->getXPos(),protagon->getYPos()+1);
+    int place = world->getCols()*(protagon->getYPos()+1)+protagon->getXPos();
+    if(world_tiles.at(place)->getValue()!= INFINITY){
+         protagon->setPos(protagon->getXPos(),protagon->getYPos()+1);
+    }
 }
 
 void World_handler::Move_left()
 {
-    protagon->setPos(protagon->getXPos()-1,protagon->getYPos());
+    int place = world->getCols()*(protagon->getYPos())+protagon->getXPos()-1;
+    if(world_tiles.at(place)->getValue()!= INFINITY){
+         protagon->setPos(protagon->getXPos()-1,protagon->getYPos());
+    }
 }
 
 void World_handler::Move_right()
 {
-    protagon->setPos(protagon->getXPos()+1,protagon->getYPos());
+    int place = world->getCols()*(protagon->getYPos())+protagon->getXPos()+1;
+    if(world_tiles.at(place)->getValue()!= INFINITY){
+         protagon->setPos(protagon->getXPos()+1,protagon->getYPos());
+    }
 }
 
 //getters
@@ -87,21 +98,48 @@ int World_handler::getYPosProtagon()
 
 int World_handler::getXPosEnemy(int i)
 {
+    int place = world->getCols()*(enemies.at(i)->getYPos())+enemies.at(i)->getXPos();
+    while(world_tiles.at(place)->getValue()== INFINITY){
+          place++;
+    }
+    enemies.at(i)->setXPos(world_tiles.at(place)->getXPos());
+    enemies.at(i)->setYPos(world_tiles.at(place)->getYPos());
     return enemies.at(i)->getXPos();
 }
 
 int World_handler::getYPosEnemy(int i)
 {
+    int place = world->getCols()*(enemies.at(i)->getYPos())+enemies.at(i)->getXPos();
+    while(world_tiles.at(place)->getValue()== INFINITY){
+          place++;
+    }
+    enemies.at(i)->setXPos(world_tiles.at(place)->getXPos());
+    enemies.at(i)->setYPos(world_tiles.at(place)->getYPos());
+
     return enemies.at(i)->getYPos();
 }
 
 int World_handler::getXPosHealthpack(int i)
 {
+    int place = world->getCols()*(healthpacks.at(i)->getYPos())+healthpacks.at(i)->getXPos();
+    while(world_tiles.at(place)->getValue()== INFINITY){
+          place++;
+    }
+    healthpacks.at(i)->setXPos(world_tiles.at(place)->getXPos());
+    healthpacks.at(i)->setYPos(world_tiles.at(place)->getYPos());
+
     return healthpacks.at(i)->getXPos();
 }
 
 int World_handler::getYPosHealthpack(int i)
 {
+    int place = world->getCols()*(healthpacks.at(i)->getYPos())+healthpacks.at(i)->getXPos();
+    while(world_tiles.at(place)->getValue()== INFINITY){
+          place++;
+    }
+    healthpacks.at(i)->setXPos(world_tiles.at(place)->getXPos());
+    healthpacks.at(i)->setYPos(world_tiles.at(place)->getYPos());
+
     return healthpacks.at(i)->getYPos();
 }
 

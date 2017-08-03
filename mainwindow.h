@@ -12,6 +12,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include "world_handler.h"
+#include <QScrollBar>
 
 namespace Ui {
 class MainWindow;
@@ -27,14 +28,18 @@ public:
 
     void DisplayTiles();
     void DisplayCharacters();
+    void KeepProtagonCentered();
 protected:
     void resizeEvent(QResizeEvent* event);
     //void keyPressEvent(QKeyEvent *event);
     bool eventFilter(QObject *Object, QEvent *Event);
+
 private:
     Ui::MainWindow *ui;
     QGraphicsView *view;
     QGraphicsScene* scene;
+    QScrollBar* Yscroll;
+    QScrollBar* Xscroll;
 
     std::shared_ptr<World_handler> world;
     unsigned long int tilesneededy;
@@ -48,7 +53,7 @@ private:
     int maxRow;
     int minRow;
     const int NrOfhealtpacks = 10;
-    const int NrOfenemies = 1;
+    const int NrOfenemies = 20;
 };
 
 #endif // MAINWINDOW_H

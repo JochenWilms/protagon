@@ -8,8 +8,12 @@ MainWindow::MainWindow(QWidget *parent) :
     view = new QGraphicsView();
     ui->setupUi(this);
     this->installEventFilter(this);
-    //this->setMouseTracking(true);
+    this->setMouseTracking(true);
     scene = new QGraphicsScene(this);
+    Yscroll=ui->graphicsView->verticalScrollBar();
+    Xscroll =ui->graphicsView->horizontalScrollBar();
+    Yscroll->setValue(scale);
+    Xscroll->setValue(scale);
     world = std::make_shared<World_handler>(NrOfhealtpacks,NrOfenemies);
 
     this->setFocus();
@@ -35,6 +39,15 @@ void MainWindow::DisplayTiles(){
 }
 
 void MainWindow::DisplayCharacters(){
+    /*
+     * display health first so the protagon can eat it
+     * display protagon second so the enemy eats the protagon
+    */
+    //Display health
+    for(int i=0;i<NrOfhealtpacks;i++){
+        QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfhealthpack()));
+        pix->setPos(world->getXPosHealthpack(i)*scale,world->getYPosHealthpack(i)*scale);
+    }
     //display protagon
     protagonPix = scene->addPixmap(*(world->getPixmapOfProtagon()));
     protagonPix->setFlag(QGraphicsItem::ItemIsMovable);
@@ -45,11 +58,13 @@ void MainWindow::DisplayCharacters(){
         QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfenemy()));
         pix->setPos(world->getXPosEnemy(i)*scale,world->getYPosEnemy(i)*scale);
     }
-    //Display health
-    for(int i=0;i<NrOfhealtpacks;i++){
-        QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfhealthpack()));
-        pix->setPos(world->getXPosHealthpack(i)*scale,world->getYPosHealthpack(i)*scale);
-    }
+
+}
+
+void MainWindow::KeepProtagonCentered()
+{
+    Yscroll->setValue((world->getYPosProtagon()*scale)-(this->height()/2));
+    Xscroll->setValue((world->getXPosProtagon()*scale)-(this->width()/2));
 }
 
 
@@ -74,42 +89,59 @@ bool MainWindow::eventFilter(QObject *Object, QEvent *Event)
     switch(KeyEvent->key())
     {
     case Qt::Key_Up:                               // up
+        //test comment
        world->Move_up();
+       KeepProtagonCentered();
        qDebug() << "You typed up";
         break;
     case Qt::Key_Down:                               // down
         world->Move_down();
+        KeepProtagonCentered();
         qDebug() << "You typed down";
         break;
     case Qt::Key_Left:                               // left
          world->Move_left();
+         KeepProtagonCentered();
         qDebug() << "You typed left";
         break;
     case Qt::Key_Right:                               // right
         world->Move_right();
+        KeepProtagonCentered();
         qDebug() << "You typed right";
         break;
     case Qt::Key_Z:                               // up
         world->Move_up();
+        KeepProtagonCentered();
        qDebug() << "You typed z ";
         break;
     case Qt::Key_S:                               // down
          world->Move_down();
+         KeepProtagonCentered();
         qDebug() << "You typed s ";
         break;
     case Qt::Key_Q:                               // left
          world->Move_left();
+         KeepProtagonCentered();
         qDebug() << "You typed q ";
         break;
     case Qt::Key_D:                               // right
          world->Move_right();
+         KeepProtagonCentered();
        qDebug() << "You typed d";
+        break;
+    case Qt::Key_Space:                               // right
+         KeepProtagonCentered();
+
+       qDebug() << "You typed spacebar";
         break;
     }
     //DisplayTiles();
     protagonPix->setPos(world->getXPosProtagon()*scale,world->getYPosProtagon()*scale);
   }
-
+  if (Event->type() == QEvent::GraphicsSceneMouseMove){
+      qDebug() << "mouse moved";
+  }
 
   return QObject::eventFilter(Object,Event);
 }
+
