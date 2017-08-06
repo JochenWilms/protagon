@@ -18,6 +18,7 @@ public:
 
     //position getters
     std::shared_ptr<QPixmap> getPixmapOfTile(int x, int y);
+    std::shared_ptr<QPixmap> getPixmapOfgrassWalked();
     std::shared_ptr<QPixmap> getPixmapOfProtagon();
     std::shared_ptr<QPixmap> getPixmapOfenemy();
     std::shared_ptr<QPixmap> getPixmapOfhealthpack();
@@ -39,6 +40,7 @@ private:
     std::unique_ptr<Protagonist> protagon ;
     std::shared_ptr<QPixmap> wall;
     std::shared_ptr<QPixmap> grass;
+    std::shared_ptr<QPixmap> grass_walked;
     std::shared_ptr<QPixmap> protagon_front;
     std::shared_ptr<QPixmap> health;
     std::shared_ptr<QPixmap> enemy;

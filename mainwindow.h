@@ -13,6 +13,8 @@
 #include <QEvent>
 #include "world_handler.h"
 #include <QScrollBar>
+#include <QMouseEvent>
+
 
 namespace Ui {
 class MainWindow;
@@ -29,7 +31,9 @@ public:
     void DisplayTiles();
     void DisplayCharacters();
     void KeepProtagonCentered();
+    void showPath();
 protected:
+    void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent* event);
     //void keyPressEvent(QKeyEvent *event);
     bool eventFilter(QObject *Object, QEvent *Event);
@@ -42,6 +46,7 @@ private:
     QScrollBar* Xscroll;
 
     std::shared_ptr<World_handler> world;
+    std::vector<QGraphicsPixmapItem*> world_pixmaps;
     unsigned long int tilesneededy;
     unsigned long int tilesneededx;
     const int scale = 50;

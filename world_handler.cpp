@@ -10,6 +10,7 @@ World_handler::World_handler(int NrOfHealthpacks,int NrOfEnemies)
     //set qpixmap
     wall = std::make_shared<QPixmap>(":/wall.png");
     grass = std::make_shared<QPixmap>(":/grass.png");
+    grass_walked = std::make_shared<QPixmap>(":/grasswalked.png");
     protagon_front = std::make_shared<QPixmap>(":/protagon_front.png");
     enemy = std::make_shared<QPixmap>(":/zombie.png");
     health = std::make_shared<QPixmap>(":/health.png");
@@ -34,6 +35,7 @@ void World_handler::Move_up()
     if(world_tiles.at(place)->getValue()!= INFINITY){
          protagon->setPos(protagon->getXPos(),protagon->getYPos()-1);
     }
+
 }
 
 void World_handler::Move_down()
@@ -69,6 +71,11 @@ std::shared_ptr<QPixmap> World_handler::getPixmapOfTile(int x, int y)
     }else{
         return grass;
     }
+}
+
+std::shared_ptr<QPixmap> World_handler::getPixmapOfgrassWalked()
+{
+    return grass_walked;
 }
 
 std::shared_ptr<QPixmap> World_handler::getPixmapOfProtagon()

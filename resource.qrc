@@ -6,5 +6,6 @@
         <file>protagon_front.png</file>
         <file>health.png</file>
         <file>zombie.png</file>
+        <file>grasswalked.png</file>
     </qresource>
 </RCC>

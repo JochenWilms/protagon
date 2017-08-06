@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     view = new QGraphicsView();
     ui->setupUi(this);
     this->installEventFilter(this);
+
     this->setMouseTracking(true);
     scene = new QGraphicsScene(this);
     Yscroll=ui->graphicsView->verticalScrollBar();
@@ -34,25 +35,24 @@ void MainWindow::DisplayTiles(){
         for(unsigned long int i =0;i<500; i++) {
             QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfTile(i,j)));
             pix->setPos(i*scale,j*scale);
+            world_pixmaps.push_back(pix);
         }
     }
 }
 
 void MainWindow::DisplayCharacters(){
-    /*
-     * display health first so the protagon can eat it
-     * display protagon second so the enemy eats the protagon
-    */
-    //Display health
-    for(int i=0;i<NrOfhealtpacks;i++){
-        QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfhealthpack()));
-        pix->setPos(world->getXPosHealthpack(i)*scale,world->getYPosHealthpack(i)*scale);
-    }
+
     //display protagon
     protagonPix = scene->addPixmap(*(world->getPixmapOfProtagon()));
     protagonPix->setFlag(QGraphicsItem::ItemIsMovable);
     protagonPix->setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
     protagonPix->setPos(world->getXPosProtagon()*scale,world->getYPosProtagon()*scale);
+    showPath();
+    //Display health
+    for(int i=0;i<NrOfhealtpacks;i++){
+        QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfhealthpack()));
+        pix->setPos(world->getXPosHealthpack(i)*scale,world->getYPosHealthpack(i)*scale);
+    }
     //display enemies
     for(int i=0;i<NrOfenemies;i++){
         QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfenemy()));
@@ -67,6 +67,18 @@ void MainWindow::KeepProtagonCentered()
     Xscroll->setValue((world->getXPosProtagon()*scale)-(this->width()/2));
 }
 
+void MainWindow::showPath()
+{
+    QGraphicsPixmapItem* pix = world_pixmaps.at(world->getYPosProtagon()*500+world->getXPosProtagon());
+    pix->setPixmap(*(world->getPixmapOfgrassWalked()));
+
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    qDebug() << "mouse moved";
+}
+
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
@@ -77,6 +89,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     DisplayTiles();
     DisplayCharacters();
 }
+
+
 
 
 bool MainWindow::eventFilter(QObject *Object, QEvent *Event)
@@ -137,11 +151,17 @@ bool MainWindow::eventFilter(QObject *Object, QEvent *Event)
     }
     //DisplayTiles();
     protagonPix->setPos(world->getXPosProtagon()*scale,world->getYPosProtagon()*scale);
+    showPath();
+    return true;
   }
-  if (Event->type() == QEvent::GraphicsSceneMouseMove){
-      qDebug() << "mouse moved";
+
+  if (Event->type() == QEvent::MouseButtonPress){
+       QMouseEvent *mouseEvent = static_cast< QMouseEvent* >( Event );
+      qDebug() << "mouse clicked";
+      qDebug() << mouseEvent->pos();
+      return true;
+
   }
 
   return QObject::eventFilter(Object,Event);
 }
-

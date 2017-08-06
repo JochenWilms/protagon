@@ -21,9 +21,9 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     world.h \
-    world_global.h \
     display.h \
-    world_handler.h
+    world_handler.h \
+    world_global.h
 
 FORMS    += mainwindow.ui
 
