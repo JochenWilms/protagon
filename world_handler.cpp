@@ -150,5 +150,10 @@ int World_handler::getYPosHealthpack(int i)
     return healthpacks.at(i)->getYPos();
 }
 
+int World_handler::getWorldcols()
+{
+    return world->getCols();
+}
+
 
 

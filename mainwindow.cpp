@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -21,6 +22,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
+    DisplayTiles();
+    DisplayCharacters();
+
+    QWidget *dummyWidget = new QWidget();
+    QFormLayout *formLayout = new QFormLayout;
+    QProgressBar *bar1 = new QProgressBar();
+    QProgressBar *bar2 = new QProgressBar();
+    bar1->setValue(100);
+    bar2->setValue(100);
+    formLayout->addRow("&Health:", bar1);
+    formLayout->addRow("&Energy:", bar2);
+    dummyWidget->setLayout(formLayout);
+    scene->addWidget(dummyWidget);
 }
 
 MainWindow::~MainWindow()
@@ -31,13 +45,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayTiles(){
     //display tiles
-    for(unsigned long int j =0;j<500; j++) {
-        for(unsigned long int i =0;i<500; i++) {
-            QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfTile(i,j)));
-            pix->setPos(i*scale,j*scale);
-            world_pixmaps.push_back(pix);
+
+        for(unsigned long int j =0;j<500; j++) {
+            for(unsigned long int i =0;i<500; i++) {
+                QGraphicsPixmapItem* pix = scene->addPixmap(*(world->getPixmapOfTile(i,j)));
+                pix->setPos(i*scale,j*scale);
+                world_pixmaps.push_back(pix);
+            }
         }
-    }
+
+
 }
 
 void MainWindow::DisplayCharacters(){
@@ -69,7 +86,7 @@ void MainWindow::KeepProtagonCentered()
 
 void MainWindow::showPath()
 {
-    QGraphicsPixmapItem* pix = world_pixmaps.at(world->getYPosProtagon()*500+world->getXPosProtagon());
+    QGraphicsPixmapItem* pix = world_pixmaps.at(world->getYPosProtagon()*world->getWorldcols()+world->getXPosProtagon());
     pix->setPixmap(*(world->getPixmapOfgrassWalked()));
 
 }
@@ -86,11 +103,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     ui->graphicsView->resize(this->width(),this->height());
     tilesneededx = (ui->graphicsView->width()/scale);
     tilesneededy = (ui->graphicsView->height()/scale);
-    DisplayTiles();
-    DisplayCharacters();
 }
-
-
 
 
 bool MainWindow::eventFilter(QObject *Object, QEvent *Event)

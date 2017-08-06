@@ -32,6 +32,8 @@ public:
     int getXPosHealthpack(int i);
     int getYPosHealthpack(int i);
 
+    int getWorldcols();
+
 private:
     World *world ;
     std::vector<std::unique_ptr<Tile>> world_tiles;

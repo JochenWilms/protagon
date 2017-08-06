@@ -15,6 +15,8 @@
 #include <QScrollBar>
 #include <QMouseEvent>
 
+#include <QFormLayout>
+#include <QProgressBar>
 
 namespace Ui {
 class MainWindow;
