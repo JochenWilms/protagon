@@ -17,6 +17,7 @@
 
 #include <QFormLayout>
 #include <QProgressBar>
+#include "node.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +35,16 @@ public:
     void DisplayCharacters();
     void KeepProtagonCentered();
     void showPath();
+    void playGame();
+
+    void walkPath(QQueue<int> queue);
+    QQueue<int> getQueue() const;
+    void setQueue(const QQueue<int> &value);
+    void DisplayPath(std::shared_ptr<Node> path);
+
+public slots:
+    void walkPath2();
+
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent* event);
@@ -60,7 +71,11 @@ private:
     int maxRow;
     int minRow;
     const int NrOfhealtpacks = 10;
-    const int NrOfenemies = 20;
+    const int NrOfenemies = 30;
+
+    QQueue<int> queue;
+    std::shared_ptr<Node> plannedPath;
+
 };
 
 #endif // MAINWINDOW_H

@@ -16,25 +16,34 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         display.cpp \
     world.cpp \
-    world_handler.cpp
-        #world.cpp
+    world_handler.cpp \
+    #world.cpp  \
+    pathfinder.cpp \
+    node.cpp
 
 HEADERS  += mainwindow.h \
     world.h \
+    world_global.h \
     display.h \
-    world_handler.h \
-    world_global.h
+    world_handler.h  \
+    pathfinder.h \
+    node.h
+
 
 FORMS    += mainwindow.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lworld
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./lib/ -lworld
+win32: LIBS += -L$$PWD/./lib/ -lworld
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./debug/ -lworld
 else:unix: LIBS += -L$$PWD/./ -lworld
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
-DISTFILES +=
+DISTFILES += \
+    maze1.png \
+    ../../game/Game/smile.jpg
+
 
 RESOURCES += \
     resource.qrc
